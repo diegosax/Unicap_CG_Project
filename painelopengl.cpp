@@ -61,7 +61,7 @@ void PainelOpenGL::paintGL(){
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity(); // limpa todas as transformaes
 
-   // glTranslated(0.0, 0.0, -5.0);
+    glTranslated(0.0, 0.0, -5.0);
 
     glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);
     glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>JanelaPrincipal</class>
+ <widget class="QWidget" name="JanelaPrincipal">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>700</width>
+    <height>500</height>
+   </rect>
+  </property>
+  <property name="sizePolicy">
+   <sizepolicy hsizetype="Preferred" vsizetype="Preferred">
+    <horstretch>0</horstretch>
+    <verstretch>0</verstretch>
+   </sizepolicy>
+  </property>
+  <property name="windowTitle">
+   <string>JanelaPrincipal</string>
+  </property>
+  <layout class="QGridLayout" name="gridLayout">
+   <item row="0" column="0">
+    <widget class="PainelOpenGL" name="widget" native="true"/>
+   </item>
+  </layout>
+ </widget>
+ <layoutdefault spacing="6" margin="11"/>
+ <customwidgets>
+  <customwidget>
+   <class>PainelOpenGL</class>
+   <extends>QWidget</extends>
+   <header>painelopengl.h</header>
+   <container>1</container>
+   <slots>
+    <signal>altp1x(int)</signal>
+    <signal>altp1y(int)</signal>
+    <signal>altp2x(int)</signal>
+    <signal>altp2y(int)</signal>
+    <signal>setTime(int)</signal>
+    <signal>altRaioX(int)</signal>
+    <signal>altRaioY(int)</signal>
+    <slot>setp1x(int)</slot>
+    <slot>setp1y(int)</slot>
+    <slot>setp2x(int)</slot>
+    <slot>setp2y(int)</slot>
+    <slot>desenhar()</slot>
+    <slot>setDdaSlot(bool)</slot>
+    <slot>setCircunferenciaSlot(bool)</slot>
+    <slot>setBresenhamSlot(bool)</slot>
+    <slot>setElipseSlot(bool)</slot>
+    <slot>setRaioXSlot(int)</slot>
+    <slot>setRaioYSlot(int)</slot>
+    <slot>limpar()</slot>
+   </slots>
+  </customwidget>
+ </customwidgets>
+ <resources/>
+ <connections/>
+</ui>

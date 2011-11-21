@@ -49,6 +49,7 @@ private:
     void lerArquivo(string path);
 
     void tracarEixo();
+    void plotPoint();
 
 };
 

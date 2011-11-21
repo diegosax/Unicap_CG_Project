@@ -25,12 +25,14 @@ static float lerNumero(QString line);
 void PainelOpenGL::initializeGL(){
 
     glClearColor(1.0f, 1.0f, 1.0f, 0.0f);
-    glClearDepth(1.0f);
+    //glClearDepth(1.0f);
 
-    glEnable(GL_DEPTH_TEST);
-    glDepthFunc(GL_LEQUAL);
+    //glEnable(GL_DEPTH_TEST);
+    glEnable(GL_LINE_SMOOTH);
+    //glDepthFunc(GL_LEQUAL);
+    glShadeModel(GL_NICEST);
 
-    glHint(GL_PERSPECTIVE_CORRECTION_HINT, GL_NICEST);
+    glHint(GL_LINE_SMOOTH_HINT, GL_NICEST);
 }
 
 /*
@@ -45,10 +47,11 @@ void PainelOpenGL::resizeGL(int width, int height){
 
     glMatrixMode(GL_PROJECTION);
     glLoadIdentity();
-    gluPerspective(50.0f,(GLfloat)width/(GLfloat)height,0.1f,100.0f);
+    gluPerspective(75.0f,(GLfloat)width/(GLfloat)height,0.1f,100.0f);
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
+    gluLookAt(2, 1, 15, 0, 0, 0, 0, 1, 0);
 
 }
 
@@ -61,15 +64,21 @@ void PainelOpenGL::paintGL(){
     // Limpa a janela de visualizao com a cor branca
     // e Limpa o buffer de teste de profundidade
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    glLoadIdentity(); // limpa todas as transformaes
-
-    glTranslated(0.0, 0.0, -5.0);
+    glPushMatrix(); 	// It is important to push the Matrix before calling
+                        // glRotatef and glTranslatef
 
     glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);
     glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
 
     tracarEixo();
+
+    glPopMatrix();
+
+}
+
+void PainelOpenGL::plotPoint(){
+
 
 }
 
@@ -82,18 +91,18 @@ void PainelOpenGL::tracarEixo(){
         // Eixo X
         glColor3f(1.0f,0.0f,0.0f);
         glVertex3i(0, 0, 0);
-        glVertex3i(2.0, 0, 0);
+        glVertex3i(10.0, 0, 0);
 
-        // Eixo X
+        // Eixo Y
         glColor3f(0.0f,1.0f,0.0f);
         glVertex3i(0, 0, 0);
-        glVertex3i(0, 2.0, 0);
+        glVertex3i(0, 10.0, 0);
 
 
-        // Eixo X
+        // Eixo Z
         glColor3f(0.0f,0.0f,1.0f);
         glVertex3i(0, 0, 0);
-        glVertex3i(0, 0, 2.0);
+        glVertex3i(0, 0, 10.0);
 
     glEnd();
 

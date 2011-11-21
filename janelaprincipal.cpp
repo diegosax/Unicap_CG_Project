@@ -6,6 +6,7 @@ JanelaPrincipal::JanelaPrincipal(QWidget *parent) :
     ui(new Ui::JanelaPrincipal)
 {
     ui->setupUi(this);
+    setFocusPolicy(Qt::StrongFocus);
 }
 
 JanelaPrincipal::~JanelaPrincipal()

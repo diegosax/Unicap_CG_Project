@@ -1,4 +1,5 @@
 #include <QMouseEvent>
+#include <QKeyEvent>
 #include <QTime>
 #include <QFile>
 #include <QTextStream>
@@ -7,6 +8,7 @@
 PainelOpenGL::PainelOpenGL(QWidget *parent) :
     QGLWidget(parent)
 {
+    setFocusPolicy(Qt::StrongFocus);
     xRot = 1;
     yRot = 1;
     zRot = 0;
@@ -67,19 +69,32 @@ void PainelOpenGL::paintGL(){
     glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
 
+    tracarEixo();
 
+}
+
+void PainelOpenGL::tracarEixo(){
 
     glLineWidth(1);
-    glColor3f(0,0.7f,0.7f);
-    glBegin(GL_LINES);
-        glVertex3i(0, 0, 0);
-        glVertex3i(0, 2.0, 0);
 
+    glBegin(GL_LINES);
+
+        // Eixo X
+        glColor3f(1.0f,0.0f,0.0f);
         glVertex3i(0, 0, 0);
         glVertex3i(2.0, 0, 0);
 
+        // Eixo X
+        glColor3f(0.0f,1.0f,0.0f);
+        glVertex3i(0, 0, 0);
+        glVertex3i(0, 2.0, 0);
+
+
+        // Eixo X
+        glColor3f(0.0f,0.0f,1.0f);
         glVertex3i(0, 0, 0);
         glVertex3i(0, 0, 2.0);
+
     glEnd();
 
 }

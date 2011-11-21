@@ -48,6 +48,8 @@ private:
 
     void lerArquivo(string path);
 
+    void tracarEixo();
+
 };
 
 class Ponto3D{

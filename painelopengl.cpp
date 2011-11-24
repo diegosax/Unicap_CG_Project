@@ -12,6 +12,8 @@ PainelOpenGL::PainelOpenGL(QWidget *parent) :
     xRot = 1;
     yRot = 1;
     zRot = 0;
+    xMax = yMax = zMax = 10.0;
+    malha = false;
 }
 
 static void qNormalizeAngle(int &angle);
@@ -70,15 +72,26 @@ void PainelOpenGL::paintGL(){
     glRotatef(xRot / 16.0, 1.0, 0.0, 0.0);
     glRotatef(yRot / 16.0, 0.0, 1.0, 0.0);
     glRotatef(zRot / 16.0, 0.0, 0.0, 1.0);
-
+/*
+    glRotatef(85.0, 1.0, 1.0, 1.0);
+       for (int j = 0; j <= 8; j++) {
+          glBegin(GL_LINE_STRIP);
+          for (int i = 0; i <= 30; i++)
+             glEvalCoord2f((GLfloat)i/30.0, (GLfloat)j/8.0);
+          glEnd();
+          glBegin(GL_LINE_STRIP);
+          for (int i = 0; i <= 30; i++)
+             glEvalCoord2f((GLfloat)j/8.0, (GLfloat)i/30.0);
+          glEnd();
+       }
+*/
     tracarEixo();
+    plotarPontosControle();
+    if (malha)
+        desenharMalhaControle();
+    desenharSuperficieBezier();
 
     glPopMatrix();
-
-}
-
-void PainelOpenGL::plotPoint(){
-
 
 }
 
@@ -89,22 +102,106 @@ void PainelOpenGL::tracarEixo(){
     glBegin(GL_LINES);
 
         // Eixo X
-        glColor3f(1.0f,0.0f,0.0f);
+        glColor3f(0.0f,0.0f,0.0f);
         glVertex3i(0, 0, 0);
-        glVertex3i(10.0, 0, 0);
+        glColor3f(1.0f,0.0f,0.0f);
+        glVertex3i(xMax, 0, 0);
 
         // Eixo Y
-        glColor3f(0.0f,1.0f,0.0f);
+        glColor3f(0.0f,0.0f,0.0f);
         glVertex3i(0, 0, 0);
-        glVertex3i(0, 10.0, 0);
+        glColor3f(0.0f,1.0f,0.0f);
+        glVertex3i(0, yMax, 0);
 
 
         // Eixo Z
-        glColor3f(0.0f,0.0f,1.0f);
+        glColor3f(0.0f,0.0f,0.0f);
         glVertex3i(0, 0, 0);
-        glVertex3i(0, 0, 10.0);
+        glColor3f(0.0f,0.0f,1.0f);
+        glVertex3i(0, 0, zMax);
 
     glEnd();
+
+}
+
+void PainelOpenGL::plotarPontosControle(){
+
+    GLfloat ctrlpoints[4][4][3] = {
+        {{-1.5, -1.5, 4.0}, {-0.5, -1.5, 2.0},
+        {0.5, -1.5, -1.0}, {1.5, -1.5, 2.0}},
+        {{-1.5, -0.5, 1.0}, {-0.5, -0.5, 3.0},
+        {0.5, -0.5, 0.0}, {1.5, -0.5, -1.0}},
+        {{-1.5, 0.5, 4.0}, {-0.5, 0.5, 0.0},
+        {0.5, 0.5, 3.0}, {1.5, 0.5, 4.0}},
+        {{-1.5, 1.5, -2.0}, {-0.5, 1.5, -2.0},
+        {0.5, 1.5, 0.0}, {1.5, 1.5, -1.0}}
+    };
+    glColor3f(0.9f,0.5f,0.7f);
+    glPointSize(2);
+    glBegin(GL_POINTS);
+        for (int i = 0; i < 4; i++){
+            for (int j = 0; j < 4; j++){
+                glVertex3f(ctrlpoints[i][j][0], ctrlpoints[i][j][1], ctrlpoints[i][j][2]);
+            }
+        }
+    glEnd();
+}
+
+void PainelOpenGL::desenharMalhaControle(){
+
+    GLfloat ctrlpoints[4][4][3] = {
+        {{-1.5, -1.5, 4.0}, {-0.5, -1.5, 2.0},
+        {0.5, -1.5, -1.0}, {1.5, -1.5, 2.0}},
+        {{-1.5, -0.5, 1.0}, {-0.5, -0.5, 3.0},
+        {0.5, -0.5, 0.0}, {1.5, -0.5, -1.0}},
+        {{-1.5, 0.5, 4.0}, {-0.5, 0.5, 0.0},
+        {0.5, 0.5, 3.0}, {1.5, 0.5, 4.0}},
+        {{-1.5, 1.5, -2.0}, {-0.5, 1.5, -2.0},
+        {0.5, 1.5, 0.0}, {1.5, 1.5, -1.0}}
+    };
+    glColor3f(0.0f,1.0f,0.7f);
+    glLineWidth(2);
+    glBegin(GL_LINE_LOOP);
+        for (int i = 0; i < 4; i++){
+            for (int j = 0; j < 4; j++){
+                glVertex3f(ctrlpoints[i][j][0], ctrlpoints[i][j][1], ctrlpoints[i][j][2]);
+            }
+        }
+    glEnd();
+
+}
+
+void PainelOpenGL::desenharSuperficieBezier(){
+
+    glColor3f(0.0, 0.0, 0.0);
+
+    GLfloat ctrlpoints[4][4][3] = {
+        {{-1.5, -1.5, 4.0}, {-0.5, -1.5, 2.0},
+        {0.5, -1.5, -1.0}, {1.5, -1.5, 2.0}},
+        {{-1.5, -0.5, 1.0}, {-0.5, -0.5, 3.0},
+        {0.5, -0.5, 0.0}, {1.5, -0.5, -1.0}},
+        {{-1.5, 0.5, 4.0}, {-0.5, 0.5, 0.0},
+        {0.5, 0.5, 3.0}, {1.5, 0.5, 4.0}},
+        {{-1.5, 1.5, -2.0}, {-0.5, 1.5, -2.0},
+        {0.5, 1.5, 0.0}, {1.5, 1.5, -1.0}}
+    };
+    glMap2f(GL_MAP2_VERTEX_3, 0, 1, 3, 4, 0, 1, 12, 4, &ctrlpoints[0][0][0]);
+    glEnable(GL_MAP2_VERTEX_3);
+    glMapGrid2f(20, 0.0, 1.0, 20, 0.0, 1.0);
+
+
+    for (int j = 0; j <= 8; j++) {
+
+        glBegin(GL_LINE_STRIP);
+        for (int i = 0; i <= 30; i++)
+            glEvalCoord2f((GLfloat)i/30.0, (GLfloat)j/8.0);
+        glEnd();
+
+        glBegin(GL_LINE_STRIP);
+        for (int i = 0; i <= 30; i++)
+            glEvalCoord2f((GLfloat)j/8.0, (GLfloat)i/30.0);
+        glEnd();
+    }
 
 }
 
@@ -146,7 +243,16 @@ void PainelOpenGL::keyPressEvent(QKeyEvent *e){
     case Qt::Key_T:
         // tela transformações
         break;
+    case Qt::Key_O:
+        xRot = yRot = 1;
+        zRot = 0;
+        this->malha = false;
+        break;
+    case Qt::Key_P:
+        this->malha = !this->malha;
+        break;
     }
+    updateGL();
 }
 
 
@@ -270,33 +376,47 @@ Ponto3D::Ponto3D(){
 }
 
 Ponto3D::Ponto3D(double x, double y, double z){
-
+    this->x = x;
+    this->y = y;
+    this->z = z;
 }
 
 Ponto3D::~Ponto3D(){
 
 }
 
-int Ponto3D::getX(){
+double Ponto3D::getX(){
     return this->x;
 }
 
-int Ponto3D::getY(){
+double Ponto3D::getY(){
     return this->y;
 }
 
-int Ponto3D::getZ(){
+double Ponto3D::getZ(){
     return this->z;
 }
 
-void Ponto3D::setX(int x){
+double Ponto3D::getXDispositivo(){
+    return this->x * 10.0;
+}
+
+double Ponto3D::getYDispositivo(){
+    return this->y * 10.0;
+}
+
+double Ponto3D::getZDispositivo(){
+    return this->z * 10.0;
+}
+
+void Ponto3D::setX(double x){
     this->x = x;
 }
 
-void Ponto3D::setY(int y){
+void Ponto3D::setY(double y){
     this->y = y;
 }
 
-void Ponto3D::setZ(int z){
+void Ponto3D::setZ(double z){
     this->z = z;
 }
